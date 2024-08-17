@@ -25,10 +25,10 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMenu {
 
-    protected BlockIronFurnaceTileBase te;
-    protected Player playerEntity;
-    protected IItemHandler playerInventory;
-    protected final Level world;
+    private BlockIronFurnaceTileBase te;
+    private Player playerEntity;
+    private IItemHandler playerInventory;
+    private final Level world;
 
 
 
