@@ -523,21 +523,21 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 45) {
-                        if (!this.moveItemStackTo(itemstack1, 45, 54, false)) {
+                    } else if (index >= 19 && index < 46) {
+                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 45 && index < 54 && !this.moveItemStackTo(itemstack1, 19, 45, false)) {
+                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 54, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
                     return ItemStack.EMPTY;
                 }
             }
 
             if (te.isFactory()) {
                 if (index >= 12 && index <= 18) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 54, true)) {
+                    if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
                         return ItemStack.EMPTY;
                     }
 
@@ -575,14 +575,14 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 45) {
-                        if (!this.moveItemStackTo(itemstack1, 45, 54, false)) {
+                    } else if (index >= 19 && index < 46) {
+                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 45 && index < 54 && !this.moveItemStackTo(itemstack1, 19, 45, false)) {
+                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 54, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -590,7 +590,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
             {
 
                 if (index == 2) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 54, true)) {
+                    if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
                         return ItemStack.EMPTY;
                     }
 
@@ -616,14 +616,14 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 45) {
-                        if (!this.moveItemStackTo(itemstack1, 45, 54, false)) {
+                    } else if (index >= 19 && index < 46) {
+                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 45 && index < 54 && !this.moveItemStackTo(itemstack1, 19, 45, false)) {
+                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 54, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
                     return ItemStack.EMPTY;
                 }
             }
