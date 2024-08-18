@@ -536,7 +536,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
             }
 
             if (te.isFactory()) {
-                if (index >= 12 && index <= 18) {
+                if (index >= 13 && index <= 18) {
                     if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
                         return ItemStack.EMPTY;
                     }
