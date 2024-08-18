@@ -495,145 +495,135 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
             itemstack = itemstack1.copy();
             if (te.isGenerator())
             {
-                if (index != 6 && index != 3 && index != 4 && index != 5)
+                if (index != te.GENERATOR_FUEL && index != te.AUGMENT_RED && index != te.AUGMENT_GREEN && index != te.AUGMENT_BLUE)
                 {
-                    if (te.getItem(3).getItem() instanceof ItemAugmentSmoking)
+                    if (te.getItem(te.AUGMENT_RED).getItem() instanceof ItemAugmentSmoking)
                     {
                         if (te.getSmokingBurn(itemstack1) > 0) {
-                            if (!this.moveItemStackTo(itemstack1, 6, 7, false)) {
+                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
                                 return ItemStack.EMPTY;
                             }
                         }
                     }
-                    else if (te.getItem(3).getItem() instanceof ItemAugmentBlasting)
+                    else if (te.getItem(te.AUGMENT_RED).getItem() instanceof ItemAugmentBlasting)
                     {
                         if (te.hasGeneratorBlastingRecipe(itemstack1)) {
-                            if (!this.moveItemStackTo(itemstack1, 6, 7, false)) {
+                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
                                 return ItemStack.EMPTY;
                             }
                         }
                     }
                     else
                     {
-                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING) && !(itemstack1.getItem() instanceof ItemHeater)) {
-                            if (!this.moveItemStackTo(itemstack1, 6, 7, false)) {
+                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING) &&
+                                !(itemstack1.getItem() instanceof ItemHeater)) {
+                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
                                 return ItemStack.EMPTY;
                             }
                         }
                     }
                     if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
-                        if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
-                        if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
-                        if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 46) {
-                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
+                    } else if (index >= 19 && index < 19 + 9*3) {
+                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
+                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
+                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
                     return ItemStack.EMPTY;
                 }
             }
 
             if (te.isFactory()) {
-                if (index >= 13 && index <= 18) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
+                if (index >= te.FACTORY_INPUT[0] + te.FACTORY_INPUT.length &&
+                        index <= te.FACTORY_INPUT[te.FACTORY_INPUT.length-1] + te.FACTORY_INPUT.length) {
+                    if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, true)) {
                         return ItemStack.EMPTY;
                     }
 
                     slot.onQuickCraft(itemstack1, itemstack);
                 } else if (index >= 19) {
                      if (this.te.hasRecipe(itemstack1)) {
-                         if (getTier() == 2)
-                         {
-                             if (!this.moveItemStackTo(itemstack1, 7, 13, false)) {
-                                 return ItemStack.EMPTY;
-                             }
+                         if (!this.moveItemStackTo(itemstack1, te.FACTORY_INPUT[te.FACTORY_INPUT.length/2-1-getTier()],
+                                te.FACTORY_INPUT[te.FACTORY_INPUT.length/2+getTier()]+1, false)) {
+                            return ItemStack.EMPTY;
                          }
-                         else if (getTier() == 1)
-                         {
-                             if (!this.moveItemStackTo(itemstack1, 8, 12, false)) {
-                                 return ItemStack.EMPTY;
-                             }
-                         }
-                         else
-                         {
-                             if (!this.moveItemStackTo(itemstack1, 9, 11, false)) {
-                                 return ItemStack.EMPTY;
-                             }
-                         }
-
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
-                        if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
-                        if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
-                        if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 46) {
-                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
+                    } else if (index >= 19 && index < 19 + 9*3) {
+                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
+                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
+                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
                     return ItemStack.EMPTY;
                 }
             }
             if (te.isFurnace())
             {
 
-                if (index == 2) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 55, true)) {
+                if (index == te.OUTPUT) {
+                    if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, true)) {
                         return ItemStack.EMPTY;
                     }
 
                     slot.onQuickCraft(itemstack1, itemstack);
-                } else if (index != 1 && index != 0 && index != 3 && index != 4 && index != 5) {
+                } else if (index != te.FUEL && index != te.INPUT && index != te.AUGMENT_RED && index != te.AUGMENT_GREEN && index != te.AUGMENT_BLUE) {
                     if (this.te.hasRecipe(itemstack1)) {
-                        if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.INPUT, te.INPUT+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING)) {
-                        if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.FUEL, te.FUEL+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
-                        if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
-                        if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
                     } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
-                        if (!this.moveItemStackTo(itemstack1, 5, 6, false)) {
+                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 19 && index < 46) {
-                        if (!this.moveItemStackTo(itemstack1, 46, 55, false)) {
+                    } else if (index >= 19 && index < 19 + 9*3) {
+                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (index >= 46 && index < 55 && !this.moveItemStackTo(itemstack1, 19, 46, false)) {
+                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
+                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 55, false)) {
+                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
                     return ItemStack.EMPTY;
                 }
             }
