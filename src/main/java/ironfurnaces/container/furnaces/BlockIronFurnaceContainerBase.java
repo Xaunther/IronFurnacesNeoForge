@@ -30,7 +30,21 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
     private IItemHandler playerInventory;
     private final Level world;
 
-
+    private static final int FURNACE_SLOT_X = 56;
+    private static final int FURNACE_INPUT_SLOT_Y = 17;
+    private static final int FURNACE_FUEL_SLOT_Y = 53;
+    private static final int FURNACE_OUTPUT_SLOT_X = 116;
+    private static final int FURNACE_OUTPUT_SLOT_Y = (FURNACE_INPUT_SLOT_Y + FURNACE_FUEL_SLOT_Y) / 2;
+    private static final int FURNACE_AUGMENT_RED_SLOT_X = 26;
+    private static final int FURNACE_AUGMENT_GREEN_SLOT_X = 80;
+    private static final int FURNACE_AUGMENT_BLUE_SLOT_X = 134;
+    private static final int GENERATOR_FUEL_SLOT_Y = 40;
+    private static final int FACTORY_INPUT_SLOT_Y = 6;
+    private static final int FACTORY_OUTPUT_SLOT_Y = 55;
+    private static final int FACTORY_SLOT_X0 = 28;
+    private static final int FACTORY_SLOT_DX = 21;
+    private static final int PLAYER_INVENTORY_SLOT_X0 = 8;
+    private static final int PLAYER_INVENTORY_SLOT_Y0 = 84;
 
 
     public BlockIronFurnaceContainerBase(MenuType<?> containerType, int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
@@ -41,30 +55,26 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
         this.world = playerInventory.player.level();
 
         //FURNACE
-        this.addSlot(new SlotIronFurnaceInput(te, 0, 56, 17));
-        this.addSlot(new SlotIronFurnaceFuel(te, 1, 56, 53));
-        this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
-        this.addSlot(new SlotIronFurnaceAugmentRed(te, 3, 26, 35));
-        this.addSlot(new SlotIronFurnaceAugmentGreen(te, 4, 80, 35));
-        this.addSlot(new SlotIronFurnaceAugmentBlue(te, 5, 134, 35));
+        this.addSlot(new SlotIronFurnaceInput(te, te.INPUT, FURNACE_SLOT_X, FURNACE_INPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceFuel(te, te.FUEL, FURNACE_SLOT_X, FURNACE_FUEL_SLOT_Y));
+        this.addSlot(new SlotIronFurnace(playerEntity, te, te.OUTPUT, FURNACE_OUTPUT_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentRed(te, te.AUGMENT_RED, FURNACE_AUGMENT_RED_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentGreen(te, te.AUGMENT_GREEN, FURNACE_AUGMENT_GREEN_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentBlue(te, te.AUGMENT_BLUE, FURNACE_AUGMENT_BLUE_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
 
         //GENERATOR
-        this.addSlot(new SlotIronFurnaceInputGenerator(te, 6, 56, 40));
+        this.addSlot(new SlotIronFurnaceInputGenerator(te, te.GENERATOR_FUEL, FURNACE_SLOT_X, GENERATOR_FUEL_SLOT_Y));
 
         //FACTORY
-        this.addSlot(new SlotIronFurnaceInputFactory(0, te, 7, 28, 6));
-        this.addSlot(new SlotIronFurnaceInputFactory(1, te, 8, 49, 6));
-        this.addSlot(new SlotIronFurnaceInputFactory(2, te, 9, 70, 6));
-        this.addSlot(new SlotIronFurnaceInputFactory(3, te, 10, 91, 6));
-        this.addSlot(new SlotIronFurnaceInputFactory(4, te, 11, 112, 6));
-        this.addSlot(new SlotIronFurnaceInputFactory(5, te, 12, 133, 6));
-        this.addSlot(new SlotIronFurnaceOutputFactory(0, playerEntity, te, 13, 28, 55));
-        this.addSlot(new SlotIronFurnaceOutputFactory(1, playerEntity, te, 14, 49, 55));
-        this.addSlot(new SlotIronFurnaceOutputFactory(2, playerEntity, te, 15, 70, 55));
-        this.addSlot(new SlotIronFurnaceOutputFactory(3, playerEntity, te, 16, 91, 55));
-        this.addSlot(new SlotIronFurnaceOutputFactory(4, playerEntity, te,17, 112, 55));
-        this.addSlot(new SlotIronFurnaceOutputFactory(5, playerEntity, te, 18, 133, 55));
-        layoutPlayerInventorySlots(8, 84);
+        for( int factoryIndex = 0; factoryIndex < te.FACTORY_INPUT.length; ++factoryIndex ) {
+            this.addSlot(new SlotIronFurnaceInputFactory(factoryIndex, te,
+                    te.FACTORY_INPUT[factoryIndex], FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_INPUT_SLOT_Y));
+        }
+        for( int factoryIndex = 0; factoryIndex < te.FACTORY_INPUT.length; ++factoryIndex ) {
+            this.addSlot(new SlotIronFurnaceOutputFactory(factoryIndex, playerEntity, te,
+                    te.FACTORY_INPUT[factoryIndex] + te.FACTORY_INPUT.length, FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_OUTPUT_SLOT_Y));
+        }
+        layoutPlayerInventorySlots(PLAYER_INVENTORY_SLOT_X0, PLAYER_INVENTORY_SLOT_Y0);
         checkContainerSize(this.te, 19);
         addDataSlots();
     }
