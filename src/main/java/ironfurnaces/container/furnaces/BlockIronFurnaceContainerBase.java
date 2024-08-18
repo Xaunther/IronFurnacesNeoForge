@@ -4,6 +4,9 @@ import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.slots.*;
 import ironfurnaces.items.ItemHeater;
 import ironfurnaces.items.augments.ItemAugmentBlasting;
+import ironfurnaces.items.augments.ItemAugmentRed;
+import ironfurnaces.items.augments.ItemAugmentGreen;
+import ironfurnaces.items.augments.ItemAugmentBlue;
 import ironfurnaces.items.augments.ItemAugmentSmoking;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import ironfurnaces.util.container.FactoryDataSlot;
@@ -522,15 +525,15 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                             }
                         }
                     }
-                    if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
+                    if (itemstack1.getItem() instanceof ItemAugmentRed) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
@@ -561,15 +564,15 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                                 te.FACTORY_INPUT[te.FACTORY_INPUT.length/2+getTier()]+1, false)) {
                             return ItemStack.EMPTY;
                          }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentRed) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
@@ -603,15 +606,15 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, te.FUEL, te.FUEL+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 0)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentRed) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 1)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1, 2)) {
+                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
                         if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
                             return ItemStack.EMPTY;
                         }
