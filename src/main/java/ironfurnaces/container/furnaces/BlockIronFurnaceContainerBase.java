@@ -525,24 +525,9 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                             }
                         }
                     }
-                    if (itemstack1.getItem() instanceof ItemAugmentRed) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 && index < 19 + 9*3) {
-                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
-                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
+                    if (!this.moveItemStackToAugmentSlot(itemstack1)) {
+                        return ItemStack.EMPTY;
+                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
@@ -564,24 +549,9 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                                 te.FACTORY_INPUT[te.FACTORY_INPUT.length/2+getTier()]+1, false)) {
                             return ItemStack.EMPTY;
                          }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentRed) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 && index < 19 + 9*3) {
-                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
-                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
+                    } else if (!this.moveItemStackToAugmentSlot(itemstack1)) {
+                        return ItemStack.EMPTY;
+                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
@@ -606,24 +576,9 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, te.FUEL, te.FUEL+1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentRed) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_RED, te.AUGMENT_RED+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentGreen) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (itemstack1.getItem() instanceof ItemAugmentBlue) {
-                        if (!this.moveItemStackTo(itemstack1, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 && index < 19 + 9*3) {
-                        if (!this.moveItemStackTo(itemstack1, 19 + 9*3, 19 + 9*4, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index >= 19 + 9*3 && index < 19 + 9*4 &&
-                            !this.moveItemStackTo(itemstack1, 19, 19 + 9*3, false)) {
+                    } else if (!this.moveItemStackToAugmentSlot(itemstack1)) {
+                        return ItemStack.EMPTY;
+                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
@@ -646,6 +601,32 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
 
 
         return itemstack;
+    }
+
+
+
+    private boolean moveItemStackToAugmentSlot( ItemStack itemStack ) {
+        if (itemStack.getItem() instanceof ItemAugmentRed) {
+            return this.moveItemStackTo(itemStack, te.AUGMENT_RED, te.AUGMENT_RED+1, false);
+        }
+        else if (itemStack.getItem() instanceof ItemAugmentGreen) {
+            return this.moveItemStackTo(itemStack, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false);
+        }
+        else if (itemStack.getItem() instanceof ItemAugmentBlue) {
+            return this.moveItemStackTo(itemStack, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false);
+        }
+        return true;
+    }
+
+
+
+    private boolean moveItemStackWithinInventory( ItemStack itemStack, final int index ) {
+        if (index >= 19 && index < 19 + 9*3) {
+            return this.moveItemStackTo(itemStack, 19 + 9*3, 19 + 9*4, false);
+        } else if (index >= 19 + 9*3 && index < 19 + 9*4) {
+            return this.moveItemStackTo(itemStack, 19, 19 + 9*3, false);
+        }
+        return true;
     }
 
 
