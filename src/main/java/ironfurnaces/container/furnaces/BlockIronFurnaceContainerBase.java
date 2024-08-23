@@ -10,6 +10,7 @@ import ironfurnaces.items.augments.ItemAugmentBlue;
 import ironfurnaces.items.augments.ItemAugmentSmoking;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import ironfurnaces.util.container.FactoryDataSlot;
+import net.minecraft.client.HotbarManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -58,24 +59,26 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
         this.world = playerInventory.player.level();
 
         //FURNACE
-        this.addSlot(new SlotIronFurnaceInput(te, te.INPUT, FURNACE_SLOT_X, FURNACE_INPUT_SLOT_Y));
-        this.addSlot(new SlotIronFurnaceFuel(te, te.FUEL, FURNACE_SLOT_X, FURNACE_FUEL_SLOT_Y));
-        this.addSlot(new SlotIronFurnace(playerEntity, te, te.OUTPUT, FURNACE_OUTPUT_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
-        this.addSlot(new SlotIronFurnaceAugmentRed(te, te.AUGMENT_RED, FURNACE_AUGMENT_RED_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
-        this.addSlot(new SlotIronFurnaceAugmentGreen(te, te.AUGMENT_GREEN, FURNACE_AUGMENT_GREEN_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
-        this.addSlot(new SlotIronFurnaceAugmentBlue(te, te.AUGMENT_BLUE, FURNACE_AUGMENT_BLUE_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceInput(te, BlockIronFurnaceTileBase.INPUT, FURNACE_SLOT_X, FURNACE_INPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceFuel(te, BlockIronFurnaceTileBase.FUEL, FURNACE_SLOT_X, FURNACE_FUEL_SLOT_Y));
+        this.addSlot(new SlotIronFurnace(playerEntity, te, BlockIronFurnaceTileBase.OUTPUT, FURNACE_OUTPUT_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentRed(te, BlockIronFurnaceTileBase.AUGMENT_RED, FURNACE_AUGMENT_RED_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentGreen(te, BlockIronFurnaceTileBase.AUGMENT_GREEN, FURNACE_AUGMENT_GREEN_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceAugmentBlue(te, BlockIronFurnaceTileBase.AUGMENT_BLUE, FURNACE_AUGMENT_BLUE_SLOT_X, FURNACE_OUTPUT_SLOT_Y));
 
         //GENERATOR
-        this.addSlot(new SlotIronFurnaceInputGenerator(te, te.GENERATOR_FUEL, FURNACE_SLOT_X, GENERATOR_FUEL_SLOT_Y));
+        this.addSlot(new SlotIronFurnaceInputGenerator(te, BlockIronFurnaceTileBase.GENERATOR_FUEL, FURNACE_SLOT_X, GENERATOR_FUEL_SLOT_Y));
 
         //FACTORY
-        for( int factoryIndex = 0; factoryIndex < te.FACTORY_INPUT.length; ++factoryIndex ) {
+        for( int factoryIndex = 0; factoryIndex < BlockIronFurnaceTileBase.FACTORY_INPUT.length; ++factoryIndex ) {
             this.addSlot(new SlotIronFurnaceInputFactory(factoryIndex, te,
-                    te.FACTORY_INPUT[factoryIndex], FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_INPUT_SLOT_Y));
+                BlockIronFurnaceTileBase.FACTORY_INPUT[factoryIndex],
+                FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_INPUT_SLOT_Y));
         }
-        for( int factoryIndex = 0; factoryIndex < te.FACTORY_INPUT.length; ++factoryIndex ) {
+        for( int factoryIndex = 0; factoryIndex < BlockIronFurnaceTileBase.FACTORY_INPUT.length; ++factoryIndex ) {
             this.addSlot(new SlotIronFurnaceOutputFactory(factoryIndex, playerEntity, te,
-                    te.FACTORY_INPUT[factoryIndex] + te.FACTORY_INPUT.length, FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_OUTPUT_SLOT_Y));
+                BlockIronFurnaceTileBase.FACTORY_INPUT[factoryIndex] + BlockIronFurnaceTileBase.FACTORY_INPUT.length,
+                FACTORY_SLOT_X0+FACTORY_SLOT_DX*factoryIndex, FACTORY_OUTPUT_SLOT_Y));
         }
         layoutPlayerInventorySlots(PLAYER_INVENTORY_SLOT_X0, PLAYER_INVENTORY_SLOT_Y0);
         checkContainerSize(this.te, 19);
@@ -490,146 +493,64 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+        Slot quickMovedSlot = this.slots.get(index);
+        if( quickMovedSlot == null || !quickMovedSlot.hasItem() )
+            return ItemStack.EMPTY;
+        
+        ItemStack rawStack = quickMovedSlot.getItem();
+        ItemStack quickMovedStack = rawStack.copy();
 
-        if (slot != null && slot.hasItem()) {
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            if (te.isGenerator())
-            {
-                if (index != te.GENERATOR_FUEL && index != te.AUGMENT_RED && index != te.AUGMENT_GREEN && index != te.AUGMENT_BLUE)
-                {
-                    if (te.getItem(te.AUGMENT_RED).getItem() instanceof ItemAugmentSmoking)
-                    {
-                        if (te.getSmokingBurn(itemstack1) > 0) {
-                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                    else if (te.getItem(te.AUGMENT_RED).getItem() instanceof ItemAugmentBlasting)
-                    {
-                        if (te.hasGeneratorBlastingRecipe(itemstack1)) {
-                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING) &&
-                                !(itemstack1.getItem() instanceof ItemHeater)) {
-                            if (!this.moveItemStackTo(itemstack1, te.GENERATOR_FUEL, te.GENERATOR_FUEL+1, false)) {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                    if (!this.moveItemStackToAugmentSlot(itemstack1)) {
-                        return ItemStack.EMPTY;
-                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-
-            if (te.isFactory()) {
-                if (index >= te.FACTORY_INPUT[0] + te.FACTORY_INPUT.length &&
-                        index <= te.FACTORY_INPUT[te.FACTORY_INPUT.length-1] + te.FACTORY_INPUT.length) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, true)) {
-                        return ItemStack.EMPTY;
-                    }
-
-                    slot.onQuickCraft(itemstack1, itemstack);
-                } else if (index >= 19) {
-                     if (this.te.hasRecipe(itemstack1)) {
-                         if (!this.moveItemStackTo(itemstack1, te.FACTORY_INPUT[te.FACTORY_INPUT.length/2-1-getTier()],
-                                te.FACTORY_INPUT[te.FACTORY_INPUT.length/2+getTier()]+1, false)) {
-                            return ItemStack.EMPTY;
-                         }
-                    } else if (!this.moveItemStackToAugmentSlot(itemstack1)) {
-                        return ItemStack.EMPTY;
-                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            if (te.isFurnace())
-            {
-
-                if (index == te.OUTPUT) {
-                    if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, true)) {
-                        return ItemStack.EMPTY;
-                    }
-
-                    slot.onQuickCraft(itemstack1, itemstack);
-                } else if (index != te.FUEL && index != te.INPUT && index != te.AUGMENT_RED && index != te.AUGMENT_GREEN && index != te.AUGMENT_BLUE) {
-                    if (this.te.hasRecipe(itemstack1)) {
-                        if (!this.moveItemStackTo(itemstack1, te.INPUT, te.INPUT+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING)) {
-                        if (!this.moveItemStackTo(itemstack1, te.FUEL, te.FUEL+1, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (!this.moveItemStackToAugmentSlot(itemstack1)) {
-                        return ItemStack.EMPTY;
-                    } else if (!this.moveItemStackWithinInventory(itemstack1, index)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(itemstack1, 19, 19 + 9*4, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            if (itemstack1.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(playerIn, itemstack1);
-
+        // Moving from a furnace slot
+        if(!(quickMovedSlot instanceof SlotItemHandler)) {
+            moveItemStackTo(rawStack, te.getContainerSize(), slots.size(), true);
+            if(quickMovedSlot instanceof SlotIronFurnace || quickMovedSlot instanceof SlotIronFurnaceOutputFactory)
+                quickMovedSlot.onQuickCraft(rawStack, quickMovedStack);
         }
+        // Moving from player inventory
+        else if(moveItemStackTo(rawStack, BlockIronFurnaceTileBase.AUGMENT_RED, BlockIronFurnaceTileBase.AUGMENT_BLUE+1, false));
+        else if(moveItemStackToFurnace(rawStack));
+        else if(moveItemStackToGenerator(rawStack));
+        else if(moveItemStackToFactory(rawStack));
+        else moveItemStackWithinInventory(rawStack, index);
 
+        if (rawStack.getCount() == quickMovedStack.getCount())
+            return ItemStack.EMPTY;
 
-        return itemstack;
+        if (rawStack.isEmpty())
+            quickMovedSlot.set(ItemStack.EMPTY);
+        else
+            quickMovedSlot.setChanged();
+
+        quickMovedSlot.onTake(playerIn, rawStack);
+
+        return ItemStack.EMPTY;
     }
 
-
-
-    private boolean moveItemStackToAugmentSlot( ItemStack itemStack ) {
-        if (itemStack.getItem() instanceof ItemAugmentRed) {
-            return this.moveItemStackTo(itemStack, te.AUGMENT_RED, te.AUGMENT_RED+1, false);
-        }
-        else if (itemStack.getItem() instanceof ItemAugmentGreen) {
-            return this.moveItemStackTo(itemStack, te.AUGMENT_GREEN, te.AUGMENT_GREEN+1, false);
-        }
-        else if (itemStack.getItem() instanceof ItemAugmentBlue) {
-            return this.moveItemStackTo(itemStack, te.AUGMENT_BLUE, te.AUGMENT_BLUE+1, false);
-        }
-        return true;
+    private boolean moveItemStackToFurnace( ItemStack itemStack ) {
+        return te.isFurnace() ?
+            moveItemStackTo(itemStack, BlockIronFurnaceTileBase.INPUT, BlockIronFurnaceTileBase.INPUT+1, false) ?
+                true :
+                moveItemStackTo(itemStack, BlockIronFurnaceTileBase.FUEL, BlockIronFurnaceTileBase.FUEL+1, false) :
+            false;
     }
 
+    private boolean moveItemStackToGenerator( ItemStack itemStack ) {
+        return te.isGenerator() ? moveItemStackTo(itemStack, BlockIronFurnaceTileBase.GENERATOR_FUEL,
+            BlockIronFurnaceTileBase.GENERATOR_FUEL+1, false) : false;
+    }
 
+    private boolean moveItemStackToFactory( ItemStack itemStack ) {
+        return te.isFactory() ? moveItemStackTo(itemStack,
+            BlockIronFurnaceTileBase.FACTORY_INPUT[BlockIronFurnaceTileBase.FACTORY_INPUT.length/2-1-getTier()],
+            BlockIronFurnaceTileBase.FACTORY_INPUT[BlockIronFurnaceTileBase.FACTORY_INPUT.length/2+getTier()]+1, false) :
+            false;
+    }
 
     private boolean moveItemStackWithinInventory( ItemStack itemStack, final int index ) {
-        if (index >= 19 && index < 19 + 9*3) {
-            return this.moveItemStackTo(itemStack, 19 + 9*3, 19 + 9*4, false);
-        } else if (index >= 19 + 9*3 && index < 19 + 9*4) {
-            return this.moveItemStackTo(itemStack, 19, 19 + 9*3, false);
-        }
-        return true;
+        final int hotbarStartIndex = slots.size() - HotbarManager.NUM_HOTBAR_GROUPS;
+        return index < hotbarStartIndex ? moveItemStackTo(itemStack, hotbarStartIndex, slots.size(), false) :
+            moveItemStackTo(itemStack, te.getContainerSize(), hotbarStartIndex, false);
     }
-
-
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0 ; i < amount ; i++) {
