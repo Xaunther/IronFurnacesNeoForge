@@ -65,7 +65,6 @@ public abstract class TileEntityInventory extends BlockEntity implements ITileIn
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         super.loadAdditional(nbt, provider);
-        this.inventory = NonNullList.withSize(this.getMaxStackSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(nbt, this.inventory, provider);
         if (nbt.contains("CustomName", 8)) {
             this.name = Component.Serializer.fromJson(nbt.getString("CustomName"), provider);
