@@ -21,13 +21,13 @@ public class SlotIronFurnaceInputGenerator extends Slot {
      */
     @Override
     public boolean mayPlace(ItemStack stack) {
-        if (!te.getItem(3).isEmpty())
+        if (!te.getItem(BlockIronFurnaceTileBase.AUGMENT_RED).isEmpty())
         {
-            if (te.getItem(3).getItem() instanceof ItemAugmentBlasting)
+            if (te.getItem(BlockIronFurnaceTileBase.AUGMENT_RED).getItem() instanceof ItemAugmentBlasting)
             {
                 return te.hasGeneratorBlastingRecipe(stack);
             }
-            if (te.getItem(3).getItem() instanceof ItemAugmentSmoking)
+            if (te.getItem(BlockIronFurnaceTileBase.AUGMENT_RED).getItem() instanceof ItemAugmentSmoking)
             {
                 return te.getSmokingBurn(stack) > 0;
             }
