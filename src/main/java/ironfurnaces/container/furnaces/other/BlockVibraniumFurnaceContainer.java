@@ -12,7 +12,6 @@ public class BlockVibraniumFurnaceContainer extends BlockIronFurnaceContainerBas
 
     public BlockVibraniumFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(Registration.VIBRANIUM_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
-        this.te = (BlockVibraniumFurnaceTile) world.getBlockEntity(pos);
     }
 
 

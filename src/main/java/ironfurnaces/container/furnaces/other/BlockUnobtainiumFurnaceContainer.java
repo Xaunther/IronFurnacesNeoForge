@@ -14,7 +14,6 @@ public class BlockUnobtainiumFurnaceContainer extends BlockIronFurnaceContainerB
 
     public BlockUnobtainiumFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(Registration.UNOBTAINIUM_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
-        this.te = (BlockUnobtainiumFurnaceTile) world.getBlockEntity(pos);
     }
 
 

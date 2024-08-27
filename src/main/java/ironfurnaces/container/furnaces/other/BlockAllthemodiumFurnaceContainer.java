@@ -16,7 +16,6 @@ public class BlockAllthemodiumFurnaceContainer extends BlockIronFurnaceContainer
 
     public BlockAllthemodiumFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(Registration.ALLTHEMODIUM_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
-        this.te = (BlockAllthemodiumFurnaceTile) world.getBlockEntity(pos);
     }
 
 

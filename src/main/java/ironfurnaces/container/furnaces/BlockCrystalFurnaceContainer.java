@@ -13,7 +13,6 @@ public class BlockCrystalFurnaceContainer extends BlockIronFurnaceContainerBase 
 
     public BlockCrystalFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(Registration.CRYSTAL_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
-        this.te = (BlockCrystalFurnaceTile) world.getBlockEntity(pos);
     }
 
 
